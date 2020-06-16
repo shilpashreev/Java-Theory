@@ -1,0 +1,211 @@
+Why collections are used?
+
+ 1) Arrays are fixed in size
+ 2) Arrays contains homogenous data elements
+ 3) Program complexity increases in data handling
+ 
+ Arrays can be used only when the size is know upfront before run time. At run time we cant increase the size of the array.
+ Once we create an array, there is no chance of increasing or decreasing size of an array based on our usage, 
+ which is very difficult always.
+ 
+ *************************************************************************************
+ 
+ TREE SET
+  - Under lying data structur is "balanced tree"
+  - Insertion order is not preserved
+  - Heterogenous objects are not allowed
+  - If heterogenous insertion will result in "class cast exception"
+  - Duplicate objects are not allowed
+  - Null insertion is possible only once
+  - Implements serilizable and cloneable but not random access
+  - All objects are inserted, based on default/ customized sorting order.
+  
+  
+  Constructor of tree set
+      TreeSet set = new TreeSet(); // default
+      TreeSet set = new TreeSet(Comparator c); // customized sorting
+      TreeSet set = new TreeSet(Collection c);
+      TreeSet set = new TreeSet(SortedSet s);
+ 
+ Null pointer Exception
+   if for  empty tree set , if we add first element as null,
+   we will get runtime exception. 
+   Null pointer Exception"Null pointer exception".
+
+   For non empty set, if we add null as the element, we get Null pointer exception
+   
+   Class Cast Exception
+     - TreeSet set = new TreeSet();
+     t.add(new StringBuilder("A"));
+     t.add(new StringBuilder("B));
+     
+     Reason : Homogenous, but string builder doesnot implement "Comparable". Hence class cast exception
+     
+     String- implements Comparable interface
+     String Buffer - Doesnot implement comparable
+     Wrapper classes - implements comparable interface
+ 
+  Comparable Interface
+    - Present in java.lang package
+    -Contains only one method (compareTo());
+    
+      obj1.compareTo(obj2); // obj1 - is the one that needs to inserted and obj2 is the root element
+      
+      public int compareTo(Object obj1){
+         // returns negative , if obj1 has to come before obj2
+         //return positive, if obj1 comes after obj2
+         //return 0, both are equal
+      }
+      
+      sop("A".compareTo("B")) // return negative
+      sop("k".compareTo("A")) // positive
+ 
+ 
+ ***If default sorting is not available or if we are not satisfied with default sorting order, 
+ then we can go for customized sorting by using comparator.
+ 
+ Comparable - default sorting order
+ Comparator - customized sorting order
+ 
+ 
+ COMPARATOR
+  - defeines 2 methods  1) compare 2) equals
+  - present in java.util package
+  
+  1) compare
+       public int compare(Object obj1, Object obj2){
+          // returns negative , if obj1 has to come before obj2
+         //return positive, if obj1 comes after obj2
+         //return 0, both are equal
+       }
+       
+   2) equals
+      public boolean equals(Object obj)
+      
+      
+    **
+    When we are implementing comparator interface, compulsory we should provide implementation for "compare()" method and we dont 
+    need to implement equals() methods, because, equals method is available to the class through inheritance from "Object class".
+    
+    Write a program to return integers in descending order using comparator
+    
+        class MyComparator implements Comparator<>(){
+        
+            public int compare(Object obj1 , Object obj2){
+              Integer i1 = (Integer)obj1;
+              Integer i2 = (Integer) obj2;
+              
+                  if(i1 > i2){
+                    return -1;
+                  }else if(i1 < i2){
+                    return +1;
+                  }else{
+                    return 0;
+                  }
+             }
+        }
+        
+        class TreeSet {
+          public static void main(String[] args){
+            TreeSet set = new TreeSet(new MyComparator);   // if we are not passing comparator object, internally JVM will call compareTo method, which is meant for default natural sorting order
+            set.add(1);
+            set.add(2);
+          }
+          
+        }
+        
+       ------ OR------
+       
+    Different implementation 
+    - class MyComparator implements Comparator<>(){
+        
+            public int compare(Object obj1 , Object obj2){
+              Integer i1 = (Integer)obj1;
+              Integer i2 = (Integer) obj2;
+                return -i1.compareTo(i2);
+             }
+        }
+    
+        ------ OR------
+     - class MyComparator implements Comparator<>(){
+        
+            public int compare(Object obj1 , Object obj2){
+              Integer i1 = (Integer)obj1;
+              Integer i2 = (Integer) obj2;
+                return i2.compareTo(i1);
+             }
+        }
+   
+   
+   - Objects to be inserted in the order of length for string objects
+   
+           class MyComparator implements Comparator<>(){
+
+                    public int compare(Object obj1 , Object obj2){
+                      String str1 = (String)obj1;
+                      String str2 = (String) obj2;
+                      int i1 = str1.length();
+                      int i2 = str2.length();
+
+                          if(i1 > i2){
+                            return -1;
+                          }else if(i1 < i2){
+                            return +1;
+                          }else{
+                            return i1.compareTo(i2);
+                          }
+                     }
+                }
+                
+                TreeSet set = new TreeSet<>(new MyComparator);
+                set.add("AA");
+                set.add(new StringBuffer("ABD"));
+                set.add(new String("ANDDD"));
+                
+                
+              _______________________
+              
+              predefined comparable objects - String - use comparable
+              predefined non comparable classes - string buffer  - use comparator
+              
+              
+              class Employee{
+              
+                int eid;
+                String name;
+                
+                Employee(int eid , String name){
+                  this.eid = eid;
+                  this.name = name;
+                }
+               
+               publi void toString(){
+                return this.eid + "  " + this.name;
+               }
+              }
+              class EmployeeTest{
+              
+                public static void main(String[] args){
+                
+                    TreeSet set = new TreeSet<>(new MyComparator());
+                   set.add(new Employee(1,"shilpa"));
+                   set.add(new Employee(2,"Bhavya"));
+                    
+                }
+              }
+              
+              class MyComparator implements Comparator{
+                public int compare(Object obj1, Object obj2){
+                   Employee e1 = (Employee)obj1;
+                   Employee e2 = (Employee)obj2;
+                   String en1 = e1.name;
+                   String en2 = e2.name;
+                   
+                  return en1.compareTo(en2);
+                }
+              }
+              
+ 
+ ************************************************************************************
+ 
+ 
